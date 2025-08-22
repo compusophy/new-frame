@@ -78,7 +78,7 @@ export default function Demo(
   const [sendNotificationResult, setSendNotificationResult] = useState("");
 
   useEffect(() => {
-    setNotificationDetails(context?.client.notificationDetails ?? null);
+    setNotificationDetails(context?.client?.notificationDetails ?? null);
   }, [context]);
 
   const { address, isConnected } = useAccount();
@@ -135,7 +135,7 @@ export default function Demo(
     const load = async () => {
       const context = await sdk.context;
       setContext(context);
-      setAdded(context.client.added);
+      setAdded(!!context?.client?.added);
 
       sdk.on("miniAppAdded", ({ notificationDetails }) => {
         setLastEvent(
@@ -314,10 +314,10 @@ export default function Demo(
   return (
     <div
       style={{
-        paddingTop: context?.client.safeAreaInsets?.top ?? 0,
-        paddingBottom: context?.client.safeAreaInsets?.bottom ?? 0,
-        paddingLeft: context?.client.safeAreaInsets?.left ?? 0,
-        paddingRight: context?.client.safeAreaInsets?.right ?? 0,
+        paddingTop: context?.client?.safeAreaInsets?.top ?? 0,
+        paddingBottom: context?.client?.safeAreaInsets?.bottom ?? 0,
+        paddingLeft: context?.client?.safeAreaInsets?.left ?? 0,
+        paddingRight: context?.client?.safeAreaInsets?.right ?? 0,
       }}
     >
       <div className="w-[300px] mx-auto py-2 px-2">
@@ -428,7 +428,7 @@ export default function Demo(
           <h2 className="font-2xl font-bold">Add to client & notifications</h2>
 
           <div className="mt-2 mb-4 text-sm">
-            Client fid {context?.client.clientFid},
+            Client fid {context?.client?.clientFid},
             {added ? " frame added to client," : " frame not added to client,"}
             {notificationDetails
               ? " notifications enabled"
@@ -1493,12 +1493,12 @@ function QuickAuth({ setToken, token }: { setToken: (token: string | null) => vo
 
   return (
     <>
-      {status !== "authenticated" && (
+      {!token && (
         <Button onClick={handleSignIn} disabled={signingIn}>
           Sign In
         </Button>
       )}
-      {status === "authenticated" && (
+      {!!token && (
         <Button onClick={handleSignOut}>
           Sign out
         </Button>
